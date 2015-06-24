@@ -1,0 +1,74 @@
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+apply plugin: 'idea'
+
+ext{
+    weldVersion = '2.1.2.Final'
+}
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+version = '0.0.1'
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+        output.classesDir 'src/main/webapp/WEB-INF/classes'
+    }
+    test {
+        java {
+            srcDir 'src/test/java'
+        }
+        resources {
+            srcDir 'src/test/resources'
+        }
+    }
+}
+
+
+//Gretty Embedded Jetty
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:+'
+    }
+}
+gretty {
+    port = 8080
+    contextPath = 'projeto-vraptor'
+    servletContainer = 'tomcat8' //tomcat7 or tomcat8
+}
+
+
+
+dependencies {
+    compile group: 'br.com.caelum', name: 'vraptor', version: '4.1.1'
+    compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '4.0.1.Final'
+    compile group: 'org.hibernate', name: 'hibernate-c3p0', version: '4.0.1.Final'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.0.1.Final'
+    compile group: 'org.hibernate', name: 'hibernate-validator-cdi', version: '5.0.1.Final'
+    compile group: 'joda-time', name: 'joda-time', version: '2.0'
+    compile group: 'org.jboss.weld.servlet', name: 'weld-servlet-core', version: weldVersion
+    compile group: 'org.jboss.weld', name: 'weld-core-impl', version: weldVersion
+
+    //Specialized dependencies
+    compile group: 'org.languagetool', name: 'language-all', version: '2.9'
+
+    //Test dependencies
+    testCompile group: 'junit', name: 'junit', version: '4.10'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.1'
+    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.0'
+}
